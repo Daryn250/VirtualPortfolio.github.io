@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Coding Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #8fa4c7;
+            color: #2a3a54;
+            font-weight: 700;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2a3a54;
+        }
+        p {
+            line-height: 1.6;
+            max-width: 50%;
+            background-color: #7f94b7ca;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        a {
+            color: #2a3a54;
+            text-decoration: none;
+            transition-property: letter-spacing;
+            transition-duration: 1s;
+            transition-timing-function: ease-in-out;
+            
+        }
+        a:hover {
+            text-decoration: underline;
+            letter-spacing: 1px;
+            color: #2a3a54;
+            
+        }
+        #code-container {
+            background-color: #151b23;
+            border: 1px solid #2a3a54;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 60%;
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Webkit browsers (Chrome, Safari, newer versions of Edge) */
+        #code-container::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        #code-container::-webkit-scrollbar-track {
+            background: #1e2632;
+            border-radius: 8px;
+        }
+
+        #code-container::-webkit-scrollbar-thumb {
+            background-color: #8fa4c7;
+            border-radius: 8px;
+            border: 3px solid #1e2632;
+        }
+
+        #code-container::-webkit-scrollbar-thumb:hover {
+            background-color: #a4b8d9;
+        }
+
+        /* Firefox */
+        #code-container {
+            scrollbar-width: thin;
+            scrollbar-color: #8fa4c7 #1e2632;
+        }
+
+        code {
+            display: block;
+            font-family: 'Consolas', 'Courier New', monospace;
+            color: #8fa4c7;
+            line-height: 1.5;
+            margin-left: 20px;
+            white-space: pre;  /* Preserve line breaks and spacing */
+            font-size: 14px;
+        }
+        h1 {
+            color: #2a3a54;
+            font-size: 40px;
+        }
+        h2 {
+            color: #2a3a54;
+            margin-top: 40px;
+            font-size: 25px;
+        }
+        h3 {
+            color: #2a3a54;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        /* Add these new styles */
+        .parallax-container {
+            position: fixed;
+            top: 0;
+            right: 0; /* Changed from left: 0 to right: 0 */
+            width: 60vw; /* Changed from 100vh to 50vw to take up half the viewport width */
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 500vh;
+            background-repeat: repeat;
+            will-change: transform;
+        }
+
+        #layer1 {
+            background-image: url('./background/layer1.png');
+            image-rendering: pixelated;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        #layer2 {
+            background-image: url('./background/layer2(1).png');
+            image-rendering: pixelated;
+            background-size: cover;
+            z-index: -2;
+        }
+
+        #layer3 {
+            background-image: url('./background/layer3(1).png');
+            image-rendering: pixelated;
+            background-size: cover;
+            z-index: -3;
+        }
+
+        /* Make content container have a transparent background */
+
+    </style>
+</head>
+<body>
+    <div class="parallax-container">
+        <div class="parallax-layer" id="layer1"></div>
+        <div class="parallax-layer" id="layer2"></div>
+        <div class="parallax-layer" id="layer3"></div>
+    </div>
+    <h1>Coding Projects</h1>
+    <p>
+        Here, I've compiled a list of my favorite and best coding projects over the
+        years. Each project showcases my skills and interests in different areas of
+        programming. Feel free to explore them!
+    </p>
+
+    <h2 id = 'projects'>Projects</h2>
+    <h3><a href = ..\home.html>1. Portfolio Website</a></h3>
+    <p>
+        A personal portfolio website built using HTML, CSS, and JavaScript. It showcases
+        my skills, projects, and experiences in a visually appealing manner. In fact, you're looking at it right now!
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">Code For The Homepage of My Website</p>
+        <code id="sourceCode"></code>
+    </div>
+
+    <h3><a href = https://github.com/Daryn250/CMU-CS-Academy-/blob/main/conways_game_of_life.py>2. Conway's Game of Life</a></h3>
+    <p>
+        A recreation of Conway's Game of life, a cellular automaton that with simple rules creates
+        complex patterns. This project demonstrates a strong understanding of algorithms, optimization
+        through the library CMU Graphics, and a grasp of the underlying principles of cellular automata.
+        The project is built using Python and the CMU Graphics library.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">Conway's Game of Life</p>
+        <code id="conways"></code>
+    </div>
+
+    <h3><a href = https://github.com/Daryn250/CMU-CS-Academy-/blob/main/bugs_machineLearning.py>3. Machine Learning</a></h3>
+    <p>
+        This is my first machine learning project, where I created a simple model to try to simulate bugs
+        moving around a grid. The project uses Python and the CMU Graphics library. I did not use any
+        external machine learning libraries, as I wanted to create the model from scratch for my better understanding.
+        Each bug can have their own different brain structure, and their brains can evolve over time.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">Machine Learning Bugs</p>
+        <code id="ml"></code>
+    </div>
+
+    <h2 id = 'Mathematics'>Mathematics</h2>
+
+    <h3>1. 3D Cube</h3>
+    <p>
+        I picked this project because it's one of the projects that shows growth of understanding, along with
+        a better understanding of 3D geometry. This is the 3rd and final version of my 3D cube project.
+        I followed Wikipedia's article on 3D rotation matrices and matrix multiplication to create this project.
+        The project is built using Python and the CMU Graphics library.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">final_cube.py</p>
+        <code id="3dcube"></code>
+    </div>
+
+    <script>
+        function getCodeFromFile(filePath, elementId) {
+            // Fetch the source code from the specified file path
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text(); // Return the promise from response.text()
+                })
+                .then(data => {
+                    // Set the text content of the specified element to the fetched code
+                    document.getElementById(elementId).textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error loading file:', error);
+                    document.getElementById(elementId).textContent = `Error loading ${filePath}: ${error.message}`;
+                });
+        }
+
+        var fetchlist = [
+            { file: '../home.html', element: 'sourceCode' },
+            { file: './conways.py', element: 'conways' },
+            { file: './ml.py', element: 'ml' },
+            { file: './final_cube.py', element: '3dcube' }
+        ];
+
+        // Loop through the list and fetch each file
+        fetchlist.forEach(item => {
+            getCodeFromFile(item.file, item.element);
+        });
+
+
+            // Parallax scrolling effect
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                
+                // Different speeds for different layers
+                document.getElementById('layer1').style.transform = 
+                    `translateY(${scrolled * -0.6}px)`; // slowest
+                document.getElementById('layer2').style.transform = 
+                    `translateY(${scrolled * -0.3}px)`; // medium
+                document.getElementById('layer3').style.transform = 
+                    `translateY(${scrolled * -0.1}px)`; // fastest
+            });
+            
+            // Preload images
+            const preloadImages = () => {
+                const imageUrls = [
+                    './background/layer1.png',
+                    './background/layer2(1).png',
+                    './background/layer2(2).png',
+                    './background/layer2(3).png',
+                    './background/layer3(1).png',
+                    './background/layer3(2).png',
+                    './background/layer3(3).png'
+                ];
+                
+                imageUrls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            };
+
+            // Call preload before starting animation
+            preloadImages();
+            
+            var frames = 0;
+            var l2frame = 1;
+            var l3frame = 1;
+
+            function animateParallax() {
+                frames +=1;
+                if (frames % 60 === 0) {
+                    l2frame += 1;
+                    if (l2frame > 3) {
+                        l2frame = 1;
+                    }
+                    const layer2 = document.getElementById('layer2');
+                    layer2.style.backgroundImage = `url('./background/layer2(${l2frame}).png')`;
+                }
+                if (frames % 45 === 0) {
+                    l3frame += 1;
+                    if (l3frame > 3) {
+                        l3frame = 1;
+                    }
+                    const layer3 = document.getElementById('layer3');
+                    layer3.style.backgroundImage = `url('./background/layer3(${l2frame}).png')`;
+                }
+                requestAnimationFrame(animateParallax);
+            }
+            animateParallax();
+    </script>
+
+
+</body>
+</html>

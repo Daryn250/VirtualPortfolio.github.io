@@ -114,6 +114,20 @@
         .dropdown.hiding .dropdownBtn {
             transition-delay: 0s !important;
         }
+        #aboutLine {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            font-family: Georgia;
+            color:white;
+            transition: all 0.3s;
+        }
+        #aboutLine:hover {
+            text-decoration: underline;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +171,7 @@
 <!-- Project showcase buttons -->
 <button id="artButton">Art</button>
 <button id="codeButton">Code</button>
-<button id="gamesButton">Games</button>
+<button id="gamesButton">Gaming</button>
 
 <div id="artDropdown" class="dropdown">
     <button class="dropdownBtn" onclick="window.location.href='art/art.html#architecture'">Architecture</button>
@@ -181,8 +195,7 @@
 <h1 id="titleLine">Daryn G</h1>
 <h2 id="subtitleLine">Software Engineer</h2>
 <h2 id="HobbiesLine">Hobbies</h2>
-    
-    
+<h2 id="aboutLine">About</h2>
 
     <script>
         const art = document.getElementById("artButton");
@@ -191,6 +204,11 @@
         const artDropdown = document.getElementById("artDropdown");
         const codeDropdown = document.getElementById("codeDropdown");
         const gamesDropdown = document.getElementById("gamesDropdown");
+        const aboutLine = document.getElementById("aboutLine")
+
+        aboutLine.addEventListener("click", () => {
+            window.open("about/about.html", "_self"); 
+        });
 
         function buttonPositions() {
             art.style.left = (window.innerWidth/2)-(art.offsetWidth*2)+'px';
@@ -288,6 +306,8 @@
         subtitle.style.top='70px'
         subtitle.style.fontSize='30px'
     </script>
+
+
 
 <!-- for the background animation -->
     <canvas id="myCanvas"></canvas>

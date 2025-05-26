@@ -211,13 +211,18 @@
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    document.getElementById(elementId).textContent = response.text();
+                    return response.text(); // Return the promise from response.text()
                 })
                 .then(data => {
                     // Set the text content of the specified element to the fetched code
                     document.getElementById(elementId).textContent = data;
                 })
+                .catch(error => {
+                    console.error('Error loading file:', error);
+                    document.getElementById(elementId).textContent = `Error loading ${filePath}: ${error.message}`;
+                });
         }
+
         var fetchlist = [
             { file: '../home.html', element: 'sourceCode' },
             { file: './conways.py', element: 'conways' },

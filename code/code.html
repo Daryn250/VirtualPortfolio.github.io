@@ -84,6 +84,11 @@
             background-color: transparent !important;
             border-color: transparent !important;
             box-shadow: none !important;
+            overflow: hidden !important;
+            scrollbar-width: none !important; /* Firefox */
+        }
+        .code-container-transparent::-webkit-scrollbar {
+            display: none !important; /* Chrome, Safari, Edge */
         }
         .transparent-btn {
             position: absolute;
@@ -352,6 +357,7 @@
     background-color: transparent !important;
     border-color: transparent !important;
     text-shadow: none !important;
+    overflow: hidden;
 }
 #settings-window, 
 #settings-window * {

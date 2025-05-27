@@ -408,6 +408,7 @@
         <h2>Settings</h2>
         <p>Snow Enabled: <button id="snowEnabled">+</button></p>
         <p>Wind Enabled: <button id="windEnabled">+</button></p>
+        <p style="font-size: smaller;">*Flash Warning*</p>
         <p>Snow Lightning: <button id="snowLightning">+</button></p>
         <p>Night Time: <button id="nighttime">+</button></p>
         <p>All Transparent: <button id="allTransparentBtn">+</button></p>
@@ -588,6 +589,7 @@
         let allTransparent = false;
         document.getElementById('allTransparentBtn').addEventListener('click', function() {
             allTransparent = !allTransparent;
+            document.getElementById('allTransparentBtn').classList.toggle('checked');
             // Toggle text transparency on everything except the settings window
             if (allTransparent) {
                 document.querySelectorAll('body > *:not(#settings-window):not(nav):not(.parallax-container)').forEach(el => {

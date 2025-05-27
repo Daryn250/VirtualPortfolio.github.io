@@ -11,9 +11,7 @@
             font-weight: 700;
             margin: 0;
             padding: 20px;
-        }
-        h1 {
-            color: #2a3a54;
+            padding-top: 70px;  /* Add this line to existing body style */
         }
         p {
             line-height: 1.6;
@@ -25,15 +23,18 @@
         a {
             color: #2a3a54;
             text-decoration: none;
-            transition-property: letter-spacing;
-            transition-duration: 1s;
+            background-color: #ffffff00;
+            padding: 5px;
+            border-radius: 5px;
+            transition-property:  background-color;
+            transition-duration: 0.7s;
             transition-timing-function: ease-in-out;
             
         }
         a:hover {
             text-decoration: underline;
-            letter-spacing: 1px;
-            color: #2a3a54;
+            color: #7f94b7;
+            background-color: #2a3a54;
             
         }
         #code-container {
@@ -87,9 +88,13 @@
             font-size: 40px;
         }
         h2 {
-            color: #2a3a54;
+            color: #212f46;
             margin-top: 40px;
             font-size: 25px;
+            background-color: #64799eca;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: fit-content;
         }
         h3 {
             color: #2a3a54;
@@ -102,26 +107,32 @@
             position: fixed;
             top: 0;
             right: 0; /* Changed from left: 0 to right: 0 */
-            width: 60vw; /* Changed from 100vh to 50vw to take up half the viewport width */
+            width: 100vw; /* Changed from 100vh to 50vw to take up half the viewport width */
             height: 100vh;
             z-index: -1;
             overflow: hidden;
         }
 
-        .parallax-layer {
+       .parallax-layer {
             position: absolute;
             width: 100%;
             height: 500vh;
-            background-repeat: repeat;
+            background-repeat: repeat-y;
             will-change: transform;
-            transition: background-image 0.1s ease-in-out;
-            background-position: center;
+            transition: background-image 0.1s allow-discrete; /* Increased duration and changed timing function */
+            background-position: right top;
             image-rendering: pixelated;
-            background-size: cover;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            background-size: auto 100%;  /* Changed to maintain exact pixel ratio */
+            transform-origin: right top;
+            right: 0;
+            backface-visibility: hidden; /* Reduce flashing */
+            -webkit-backface-visibility: hidden;
         }
 
         #layer1 {
-            background-image: url('./background/layer1.png');
+            background-image: url('./background/layer1(1).png');
             z-index: -1;
         }
 
@@ -135,16 +146,110 @@
             z-index: -3;
         }
 
-        /* Make content container have a transparent background */
+        /* Update navbar styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2a3a54;
+    padding: 15px 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
 
+/* Remove the navbar-scrolled class since we don't need it anymore */
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #8fa4c7;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #8fa4c7;
+            color: #2a3a54;
+        }
+
+        /* Modify your existing body style to add padding for the navbar */
+        body {
+            padding-top: 70px;  /* Add this line to existing body style */
+            /* ...existing body styles... */
+        }
+
+        /* Add this to your existing CSS */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Update the minimize button styles */
+        .minimize-nav-btn {
+            position: fixed; /* Changed from absolute to fixed */
+            left: 20px;
+            top: 15px; /* Changed from 50% to fixed value */
+            transform: none; /* Removed translateY */
+            background-color: #8fa4c7;
+            color: #2a3a54;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 1001; /* Make sure it's above the navbar */
+        }
+
+        /* Update the navbar-hidden class */
+        .navbar-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Update minimize button hover state */
+        .minimize-nav-btn:hover {
+            background-color: #a4b8d9;
+        }
+
+        .minimize-nav-btn.nav-btn-invisible {
+            background-color: transparent;
+            color: #2a3a54;
+            box-shadow: none;
+        }
+
+        .minimize-nav-btn.nav-btn-invisible:hover {
+            background-color: #2a3a54;
+            color: #8fa4c7;
+        }
     </style>
 </head>
 <body>
+    
     <div class="parallax-container">
         <div class="parallax-layer" id="layer1"></div>
         <div class="parallax-layer" id="layer2"></div>
         <div class="parallax-layer" id="layer3"></div>
     </div>
+    <button class="minimize-nav-btn">−</button>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#mathematics">Mathematics</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="../home.html">Home</a></li>
+        </ul>
+    </nav>
     <h1>Coding Projects</h1>
     <p>
         Here, I've compiled a list of my favorite and best coding projects over the
@@ -187,9 +292,9 @@
         <code id="ml"></code>
     </div>
 
-    <h2 id = 'Mathematics'>Mathematics</h2>
+    <h2 id = 'mathematics'>Mathematics</h2>
 
-    <h3>1. 3D Cube</h3>
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/final_cube.py'>1. 3D Cube</a></h3>
     <p>
         I picked this project because it's one of the projects that shows growth of understanding, along with
         a better understanding of 3D geometry. This is the 3rd and final version of my 3D cube project.
@@ -201,152 +306,73 @@
         <code id="3dcube"></code>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            async function getCodeFromFile(filePath, elementId) {
-                try {
-                    const response = await fetch(filePath);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.text();
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        element.textContent = data;
-                    } else {
-                        console.error(`Element with id ${elementId} not found`);
-                    }
-                } catch (error) {
-                    console.error('Error loading file:', error);
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        element.textContent = `Error loading ${filePath}: ${error.message}`;
-                    }
-                }
-            }
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/a*_search_algorithm.py'>2. A* Search Algorithm</a></h3>
+    <p>
+        This is an implementation of the A* search algorithm, the same one that is used by google and other mapping
+        applications to find the shortest path between two given points. It's a complex algorithm and although my implementation
+        is far from perfect, it works well for something I made in a few hours. The project is also built using Python and the CMU Graphics library.
+        It works by creating a grid, and then adding weights to each cell to find the path with the least "weight", also known as least time.
+        It also uses heuristics to find the shortest path faster.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">a_search.py</p>
+        <code id="astar"></code>
+    </div>
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/slots.py'>3. Slots</a></h3>
+    <p>
+        This is a slots game based off common 5x3 slot machines. It is a simple game using Python and the CMU Graphics library to
+        simulate a slot machine. It's not entirely random and can be manipulated to win every time within the code, or if you're a casino,
+        it can be manipulated to decrease odds. The most fun part of this project was determining the outcome of the spin, and testing if the "lines"
+        were filled with the same symbol. I also added a free space that acts as a valid connector between any two symbols. It's incredibly easy to modify
+        and even add new symbols to the game, being modular and expandable.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">slots.py</p>
+        <code id="slots"></code>
+    </div>
 
-            const fetchlist = [
-                { file: '../home.html', element: 'sourceCode' },
-                { file: './conways.py', element: 'conways' },
-                { file: './ml.py', element: 'ml' },
-                { file: './final_cube.py', element: '3dcube' }
-            ];
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/wave_function_collapse_2.py'>4. Wave Function Collapse</a></h3>
+    <p>
+        This is my implementation of the Wave Function Collapse algorithm, a procedural generation algorithm that generates
+        patterns based on a set of input tiles. The algorithm works by collapsing the wave function of each tile, which
+        represents the possible states of the tile, until a valid pattern is generated. The project is built using Python and the CMU Graphics library, of course.
+        However, this implementation suffers from some issues, such as bad performance and low optimization. I plan to revisit this project
+        with a different Graphics library to both improve performance and optimization in another language, such as C++ or Javascript.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">wave_function_collapse_2.py</p>
+        <code id="wfc"></code>
+    </div>
 
-            // Loop through the list and fetch each file
-            fetchlist.forEach(item => {
-                getCodeFromFile(item.file, item.element);
-            });
+    <h2 id = 'games'>Games</h2>
+
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/bossfight.py'>1. Boss Fighter</a></h3>
+    <p>
+        This is actually the first fully functional and completed game I made. It's a 2D bullet-hell in which
+        you dodge attacks. You defeat it by outlasting it's attacks, even though some of the attacks can be sneaky.
+        The game is built using Python and the CMU Graphics library. It was a fun project to make, and I learned a lot about
+        game development, including handling user input, collision detection, game loops, and i-frames. The game that
+        inspired me most was <a href = ../games/games.html#terraria style = 'padding:0px'>Terraria</a>, a game I played a lot as a kid.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">bossfight.py</p>
+        <code id="bossfight"></code>
+    </div>
+
+    <h3><a href = 'https://github.com/Daryn250/CMU-CS-Academy-/blob/main/wordle.py'>2. Wordle</a></h3>
+    <p>
+        The game works by checking the letters of the word against the letters of the guess, and then coloring them accordingly.
+        My implementation struggles when there are multiple instances of the same letter in the word, but it works well enough for a simple game.
+        If I were to go back and improve it, I would probably use a dictionary to keep track of the letters and their counts, so that I can handle 
+        duplicates more effectively.he letters of the word against the letters of the guess, and then coloring them accordingly.
+        My implementation struggles when there are multiple instances of the same letter in the word, but it works well enough for a simple game.
+    </p>
+    <div id="code-container">
+        <p style="color:#8fa4c7">wordle.py</p>
+        <code id="wordle"></code>
+    <script src = ./background.js></script>
 
 
-            // Parallax scrolling effect
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                
-                // Different speeds for different layers
-                document.getElementById('layer1').style.transform = 
-                    `translateY(${scrolled * -0.6}px)`; // slowest
-                document.getElementById('layer2').style.transform = 
-                    `translateY(${scrolled * -0.3}px)`; // medium
-                document.getElementById('layer3').style.transform = 
-                    `translateY(${scrolled * -0.1}px)`; // fastest
-            });
-            
-            // Preload images
-            const preloadImages = () => {
-                const imageUrls = [
-                    './background/layer1.png',
-                    './background/layer2(1).png',
-                    './background/layer2(2).png',
-                    './background/layer2(3).png',
-                    './background/layer3(1).png',
-                    './background/layer3(2).png',
-                    './background/layer3(3).png'
-                ];
-                
-                imageUrls.forEach(url => {
-                    const img = new Image();
-                    img.src = url;
-                });
-            };
-
-            // Call preload before starting animation
-            preloadImages();
-            
-            var frames = 0;
-            var l2frame = 1;
-            var l3frame = 1;
-
-            // Modify the animation function
-            function animateParallax() {
-                frames += 1;
-                
-                // Preload next images before switching
-                if (frames % 30 === 29) {  // One frame before switch
-                    const nextL2Frame = (l2frame % 3) + 1;
-                    const img2 = new Image();
-                    img2.src = `./background/layer2(${nextL2Frame}).png`;
-                }
-                
-                if (frames % 130 === 129) {  // One frame before switch
-                    const nextL3Frame = (l3frame % 3) + 1;
-                    const img3 = new Image();
-                    img3.src = `./background/layer3(${nextL3Frame}).png`;
-                }
-                
-                // Update layer 2
-                if (frames % 30 === 0) {
-                    l2frame = (l2frame % 3) + 1;
-                    const layer2 = document.getElementById('layer2');
-                    requestAnimationFrame(() => {
-                        layer2.style.backgroundImage = `url('./background/layer2(${l2frame}).png')`;
-                    });
-                }
-                
-                // Update layer 3
-                if (frames % 130 === 0) {
-                    l3frame = (l3frame % 3) + 1;
-                    const layer3 = document.getElementById('layer3');
-                    requestAnimationFrame(() => {
-                        layer3.style.backgroundImage = `url('./background/layer3(${l3frame}).png')`;
-                    });
-                }
-                
-                requestAnimationFrame(animateParallax);
-            }
-
-            // Initialize with first frame
-            let preloadComplete = false;
-            function initAnimation() {
-                const totalImages = 7; // Total number of images to preload
-                let loadedImages = 0;
-                
-                const imageUrls = [
-                    './background/layer1.png',
-                    './background/layer2(1).png',
-                    './background/layer2(2).png',
-                    './background/layer2(3).png',
-                    './background/layer3(1).png',
-                    './background/layer3(2).png',
-                    './background/layer3(3).png'
-                ];
-                
-                imageUrls.forEach(url => {
-                    const img = new Image();
-                    img.onload = () => {
-                        loadedImages++;
-                        if (loadedImages === totalImages) {
-                            preloadComplete = true;
-                            animateParallax();
-                        }
-                    };
-                    img.src = url;
-                });
-            }
-
-            // Start the animation only after preloading
-            initAnimation();
-        });
-    </script>
 
 
 </body>

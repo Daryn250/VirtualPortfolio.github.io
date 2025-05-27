@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { file: './final_cube.py', element: '3dcube' },
                 { file: './a_star.py', element: 'astar' },
                 { file: './slots.py', element: 'slots' },
-                { file: './wave_function_collapse2.py', element: 'wfc' },
+                { file: './wave_function_collapse_2.py', element: 'wfc' },
                 { file: './bossfight.py', element: 'bossfight' },
                 { file: './wordle.py', element: 'wordle' },
             ];
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Remove navbar position handling
             }
             window.addEventListener('scroll', onScroll);
+            onScroll(); // Initial call to set positions on page load
             // Preload images
             const preloadImages = () => {
                 const imageUrls = [
@@ -191,13 +192,5 @@ document.addEventListener('DOMContentLoaded', function() {
             // Start the animation only after preloading
             initAnimation();
 
-            // Add navbar minimize functionality
-            const minimizeBtn = document.querySelector('.minimize-nav-btn');
-            const navbar = document.querySelector('.navbar');
             
-            minimizeBtn.addEventListener('click', function() {
-                navbar.classList.toggle('navbar-hidden');
-                this.classList.toggle('nav-btn-invisible', navbar.classList.contains('navbar-hidden'));
-                this.textContent = navbar.classList.contains('navbar-hidden') ? '+' : '−';
-            });
         });

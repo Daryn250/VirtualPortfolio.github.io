@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const box = 20;
+        let snake = [{x: 10, y: 10}];
+        allFood = [];
+        let direction = 'RIGHT';
+        function newFood() {
+            rx = Math.floor(Math.random() * (canvas.width / box));
+            ry = Math.floor(Math.random() * (canvas.height / box));
+            const food = {x: rx, y: ry};
+            allFood.push(food);
+        }
+        function drawFood() {
+            ctx.fillStyle = 'red';
+            allFood.forEach(food => {
+                ctx.fillRect(food.x * box, food.y * box, box, box);
+            });
+        }
+        function drawSnake() {
+            ctx.fillStyle = 'green';
+            snake.forEach((segment, index) => {
+                ctx.fillRect(segment.x * box, segment.y * box, box, box);
+                if (index === 0) {
+                    ctx.fillStyle = 'blue'; // Head of the snake
+                } else {
+                    ctx.fillStyle = 'green'; // Body of the snake
+                }
+            });
+        }
+        function testForHit() {
+            const head = snake[0];
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true; // Snake has hit itself
+                }
+            }
+            return false;
+        }
+        function moveSnake() {
+            const head = {x: snake[0].x, y: snake[0].y};
+            if (direction === 'LEFT') head.x -= 1;
+            if (direction === 'RIGHT') head.x += 1;
+            if (direction === 'UP') head.y -= 1;
+            if (direction === 'DOWN') head.y += 1;
+
+            snake.unshift(head);
+            if (snake.length > 5) {
+                snake.pop(); // Keep the snake length constant
+            }
+        }
+        let frames = 0;
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            frames++;
+            if (frames % 20 === 0) {
+                moveSnake();
+            }
+            
+            drawSnake();
+            drawFood();
+            requestAnimationFrame(gameLoop);
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+            if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+            if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+            if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+            if (frames===0) {
+            gameLoop();
+        }
+        });
+        drawSnake();
+        drawFood();
+    </script>
+</body>
+</html>

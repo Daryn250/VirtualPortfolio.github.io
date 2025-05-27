@@ -12,6 +12,11 @@
             margin: 0;
             padding: 20px;
             padding-top: 70px;  /* Add this line to existing body style */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            transition: all 1s;
+        }
+        #body.isNight {
+            background-color: #536178;
         }
         p {
             line-height: 1.6;
@@ -42,10 +47,12 @@
             border: 1px solid #2a3a54;
             border-radius: 8px;
             padding: 16px;
+            height: 300px;
             max-width: 60%;
             max-height: 300px;
             overflow-y: auto;
             position: relative;
+            transition: all 0.3s ease;
         }
 
         /* Webkit browsers (Chrome, Safari, newer versions of Edge) */
@@ -72,6 +79,30 @@
         #code-container {
             scrollbar-width: thin;
             scrollbar-color: #8fa4c7 #1e2632;
+        }
+        .code-container-transparent {
+            background-color: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+        .transparent-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #8fa4c7;
+            color: #2a3a54;
+            border: none;
+            border-radius: 5px;
+            padding: 3px 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .transparent-btn:hover {
+            background-color: #a4b8d9;
+            color: #2a3a54;
         }
 
         code {
@@ -147,17 +178,17 @@
         }
 
         /* Update navbar styles */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #2a3a54;
-    padding: 15px 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-}
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2a3a54;
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
 
 /* Remove the navbar-scrolled class since we don't need it anymore */
 
@@ -232,15 +263,130 @@
             background-color: #2a3a54;
             color: #8fa4c7;
         }
+        .settings-btn {
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            background-color: #8fa4c7;
+            color: #2a3a54;
+            border: none;
+            border-radius: 5px;
+            padding: 0; /* Changed from 5px 10px to 0 */
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            z-index: 1002;
+            width: 40px;   /* Set a fixed width */
+            height: 40px;  /* Set a fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            display: block;
+            border-radius: 5px;
+            pointer-events: none; /* So the button still gets the click */
+        }
+        .settings-btn:hover {
+            background-color: #a4b8d9;
+            color: #2a3a54;
+        }
+        #settings-window {
+            position: fixed;
+            top: 60px;
+            right: 30px;
+            transform: translateX(120%);
+            opacity: 0;
+            background-color: #536178;
+            color: #8fa4c7;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1003;
+            width: 200px;
+            max-width: 90vw;
+            transition: transform 0.4s cubic-bezier(.4,1.7,.6,.99), opacity 0.3s;
+            display: block;
+            pointer-events: none; /* Prevent interaction when hidden */
+        }
+        #settings-window:not(.hidden) {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #settings-window p,
+        #settings-window h2 {
+            margin: 0 !important;
+            margin-top: 5px !important;
+            border: none !important;
+            padding: 0;
+            background: none;
+            color:#7f94b7;
+            max-width: 100% !important;
+        }
+        #settings-window button {
+            background-color: #8fa4c7;
+            color: #2a3a54;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s, color 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        #settings-window button.checked {
+            background-color: #212f46;
+            color: #7f94b7;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .transparent-text,
+.transparent-text * {
+    color: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    text-shadow: none !important;
+}
+#settings-window, 
+#settings-window * {
+    color: initial !important;
+    text-shadow: initial !important;
+}
+.minimize-nav-btn {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+#snowCanvas {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 500vh;
+    pointer-events: none; /* So it doesn't block clicks */
+    z-index: -1;
+    display: block;
+}
+.parallax-container {
+    z-index: -2; /* Make sure parallax is behind the canvas */
+}
     </style>
 </head>
-<body>
+<body id="body">
     
     <div class="parallax-container">
         <div class="parallax-layer" id="layer1"></div>
         <div class="parallax-layer" id="layer2"></div>
         <div class="parallax-layer" id="layer3"></div>
     </div>
+    <canvas id="snowCanvas"></canvas>
+    
     <button class="minimize-nav-btn">−</button>
     <nav class="navbar">
         <ul class="nav-links">
@@ -249,7 +395,18 @@
             <li><a href="#games">Games</a></li>
             <li><a href="../home.html">Home</a></li>
         </ul>
+        <button class="settings-btn" title="Settings"><img src = './background/settingsbutton.png' style='max-width: 30px;'></img></button>
     </nav>
+    
+    <div id="settings-window" class="hidden">
+        <h2>Settings</h2>
+        <p>Snow Enabled: <button id="snowEnabled">+</button></p>
+        <p>Wind Enabled: <button id="windEnabled">+</button></p>
+        <p>Snow Lightning: <button id="snowLightning">+</button></p>
+        <p>Night Time: <button id="nighttime">+</button></p>
+        <p>All Transparent: <button id="allTransparentBtn">+</button></p>
+    </div>
+
     <h1>Coding Projects</h1>
     <p>
         Here, I've compiled a list of my favorite and best coding projects over the
@@ -264,6 +421,7 @@
         my skills, projects, and experiences in a visually appealing manner. In fact, you're looking at it right now!
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">Code For The Homepage of My Website</p>
         <code id="sourceCode"></code>
     </div>
@@ -276,6 +434,7 @@
         The project is built using Python and the CMU Graphics library.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">Conway's Game of Life</p>
         <code id="conways"></code>
     </div>
@@ -288,6 +447,7 @@
         Each bug can have their own different brain structure, and their brains can evolve over time.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">Machine Learning Bugs</p>
         <code id="ml"></code>
     </div>
@@ -302,6 +462,7 @@
         The project is built using Python and the CMU Graphics library.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">final_cube.py</p>
         <code id="3dcube"></code>
     </div>
@@ -315,6 +476,7 @@
         It also uses heuristics to find the shortest path faster.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">a_search.py</p>
         <code id="astar"></code>
     </div>
@@ -327,6 +489,7 @@
         and even add new symbols to the game, being modular and expandable.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">slots.py</p>
         <code id="slots"></code>
     </div>
@@ -340,6 +503,7 @@
         with a different Graphics library to both improve performance and optimization in another language, such as C++ or Javascript.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">wave_function_collapse_2.py</p>
         <code id="wfc"></code>
     </div>
@@ -355,6 +519,7 @@
         inspired me most was <a href = ../games/games.html#terraria style = 'padding:0px'>Terraria</a>, a game I played a lot as a kid.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">bossfight.py</p>
         <code id="bossfight"></code>
     </div>
@@ -368,10 +533,87 @@
         My implementation struggles when there are multiple instances of the same letter in the word, but it works well enough for a simple game.
     </p>
     <div id="code-container">
+        <button class="transparent-btn" style="position:absolute;top:8px;right:8px;z-index:2;">-</button>
         <p style="color:#8fa4c7">wordle.py</p>
         <code id="wordle"></code>
     <script src = ./background.js></script>
+    <script>
+        document.querySelectorAll('#code-container').forEach(container => {
+            const btn = container.querySelector('.transparent-btn');
+            btn.addEventListener('click', () => {
+                container.classList.toggle('code-container-transparent');
+                btn.textContent = container.classList.contains('code-container-transparent') ? '+' : '-';
+            });
+        });
 
+        // Settings button handler (optional)
+        document.querySelector('.settings-btn').addEventListener('click', () => {
+            const settingsWindow = document.getElementById('settings-window');
+            settingsWindow.classList.toggle('hidden');
+        });
+
+        let snowEnabled = false;
+        let windEnabled = false;
+        let snowLightning = false;
+        let nighttime = false;
+
+
+        document.getElementById('snowEnabled').addEventListener('click', () => {
+            snowEnabled = !snowEnabled;
+            document.getElementById('snowEnabled').textContent = snowEnabled ? '-' : '+';
+            document.getElementById('snowEnabled').classList.toggle('checked');
+        });
+        document.getElementById('windEnabled').addEventListener('click', () => {
+            windEnabled = !windEnabled;
+            document.getElementById('windEnabled').textContent = windEnabled ? '-' : '+';
+            document.getElementById('windEnabled').classList.toggle('checked');
+        });
+        document.getElementById('snowLightning').addEventListener('click', () => {
+            snowLightning = !snowLightning;
+            document.getElementById('snowLightning').textContent = snowLightning ? '-' : '+';
+            document.getElementById('snowLightning').classList.toggle('checked');
+        });
+        document.getElementById('nighttime').addEventListener('click', () => {
+            nighttime = !nighttime;
+            document.getElementById('nighttime').textContent = nighttime ? '-' : '+';
+            document.getElementById('nighttime').classList.toggle('checked');
+        });
+        // All Transparent toggle
+        let allTransparent = false;
+        document.getElementById('allTransparentBtn').addEventListener('click', function() {
+            allTransparent = !allTransparent;
+            // Toggle text transparency on everything except the settings window
+            if (allTransparent) {
+                document.querySelectorAll('body > *:not(#settings-window):not(nav):not(.parallax-container)').forEach(el => {
+                    el.classList.add('transparent-text');
+                });
+                this.textContent = '-';
+            } else {
+                document.querySelectorAll('.transparent-text').forEach(el => {
+                    el.classList.remove('transparent-text');
+                });
+                this.textContent = '+';
+            }
+            // Toggle all code containers
+            document.querySelectorAll('#code-container').forEach(container => {
+                container.classList.toggle('code-container-transparent', allTransparent);
+                const btn = container.querySelector('.transparent-btn');
+                if (btn) btn.textContent = allTransparent ? '+' : '-';
+            });
+        });
+
+        // Add navbar minimize functionality
+            const minimizeBtn = document.querySelector('.minimize-nav-btn');
+            const navbar = document.querySelector('.navbar');
+            
+            minimizeBtn.addEventListener('click', function() {
+                navbar.classList.toggle('navbar-hidden');
+                this.classList.toggle('nav-btn-invisible', navbar.classList.contains('navbar-hidden'));
+                this.textContent = navbar.classList.contains('navbar-hidden') ? '+' : '-';
+                getElementById('settings-window').classList.toggle('hidden');
+            });
+    </script>
+    <script src="./snow.js"></script>
 
 
 

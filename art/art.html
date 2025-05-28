@@ -1,12 +1,46 @@
-<h1>Art</h1>
-<h2 id="architecture">Architecture</h2>
-<!-- Architecture content -->
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art</title>
+    <style>
+        html, body {
+            height: 100%;
+            min-height: 400vh;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: center;
+            background-image: linear-gradient(#894b7b, #784b89, #594b89);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #backgroundCanvas {
+            position: fixed;
+            image-rendering: pixelated;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <script src="background.js"></script>
+    <h1>Art</h1>
+    <h2 id="architecture">Architecture</h2>
+    <!-- Architecture content -->
 
-<h2 id="sketches">Sketches</h2>
-<!-- Sketches content -->
+    <h2 id="sketches">Sketches</h2>
+    <!-- Sketches content -->
 
-<h2 id="paintings">Paintings</h2>
-<!-- Paintings content -->
+    <h2 id="paintings">Paintings</h2>
+    <!-- Paintings content -->
 
-<h2 id="pixelart">Pixel Art</h2>
-<!-- Pixel Art content -->
+    <h2 id="pixelart">Pixel Art</h2>
+    <!-- Pixel Art content -->
+</body>

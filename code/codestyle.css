@@ -1,0 +1,405 @@
+/* =========================
+   Base Styles
+   ========================= */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #8fa4c7;
+    color: #2a3a54;
+    font-weight: 700;
+    margin: 0;
+    padding: 20px;
+    padding-top: 70px;  /* Space for navbar */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    transition: all 5s;
+}
+
+#body.isNight {
+    background-color: #536178;
+}
+
+/* =========================
+   Typography
+   ========================= */
+h1 {
+    color: #2a3a54;
+    font-size: 40px;
+}
+
+h2 {
+    color: #212f46;
+    margin-top: 40px;
+    font-size: 25px;
+    background-color: #64799eca;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: fit-content;
+}
+
+h3 {
+    color: #2a3a54;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+p {
+    line-height: 1.6;
+    max-width: 50%;
+    background-color: #7f94b7ca;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* =========================
+   Links
+   ========================= */
+a {
+    color: #2a3a54;
+    text-decoration: underline;
+    background-color: #ffffff00;
+    padding: 5px;
+    border-radius: 5px;
+    transition-property: background-color;
+    transition-duration: 0.7s;
+    transition-timing-function: ease-in-out;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #7f94b7;
+    background-color: #2a3a54;
+}
+
+/* =========================
+   Navbar
+   ========================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2a3a54;
+    padding: 15px 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.navbar-hidden {
+    transform: translateY(-100%);
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #8fa4c7;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: #8fa4c7;
+    color: #2a3a54;
+}
+
+/* =========================
+   Minimize Navbar Button
+   ========================= */
+.minimize-nav-btn {
+    position: fixed;
+    left: 20px;
+    top: 15px;
+    background-color: #8fa4c7;
+    color: #2a3a54;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+.minimize-nav-btn:hover {
+    background-color: #a4b8d9;
+}
+
+.minimize-nav-btn.nav-btn-invisible {
+    background-color: transparent;
+    color: #2a3a54;
+    box-shadow: none;
+}
+
+.minimize-nav-btn.nav-btn-invisible:hover {
+    background-color: #2a3a54;
+    color: #8fa4c7;
+}
+
+/* =========================
+   Settings Button
+   ========================= */
+.settings-btn {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    background-color: #8fa4c7;
+    color: #2a3a54;
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    z-index: 1002;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    display: block;
+    border-radius: 5px;
+    pointer-events: none;
+}
+
+.settings-btn:hover {
+    background-color: #a4b8d9;
+    color: #2a3a54;
+}
+
+/* =========================
+   Settings Window
+   ========================= */
+#settings-window {
+    position: fixed;
+    top: 60px;
+    right: 30px;
+    transform: translateX(120%);
+    opacity: 0;
+    background-color: #536178;
+    color: #8fa4c7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1003;
+    width: 200px;
+    max-width: 90vw;
+    transition: transform 0.4s cubic-bezier(.4,1.7,.6,.99), opacity 0.3s;
+    display: block;
+    pointer-events: none;
+}
+
+#settings-window:not(.hidden) {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#settings-window p,
+#settings-window h2 {
+    margin: 0 !important;
+    margin-top: 5px !important;
+    border: none !important;
+    padding: 0;
+    background: none;
+    color: #7f94b7;
+    max-width: 100% !important;
+}
+
+#settings-window button {
+    background-color: #8fa4c7;
+    color: #2a3a54;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+#settings-window button.checked {
+    background-color: #212f46;
+    color: #7f94b7;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#settings-window,
+#settings-window * {
+    color: initial !important;
+    text-shadow: initial !important;
+}
+
+/* =========================
+   Code Containers
+   ========================= */
+#code-container {
+    background-color: #151b23;
+    border: 1px solid #2a3a54;
+    border-radius: 8px;
+    padding: 16px;
+    height: 300px;
+    max-width: 60%;
+    max-height: 300px;
+    overflow-y: auto;
+    position: relative;
+    transition: all 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: #8fa4c7 #1e2632;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+#code-container::-webkit-scrollbar {
+    width: 12px;
+}
+#code-container::-webkit-scrollbar-track {
+    background: #1e2632;
+    border-radius: 8px;
+}
+#code-container::-webkit-scrollbar-thumb {
+    background-color: #8fa4c7;
+    border-radius: 8px;
+    border: 3px solid #1e2632;
+}
+#code-container::-webkit-scrollbar-thumb:hover {
+    background-color: #a4b8d9;
+}
+
+/* Transparent code container */
+.code-container-transparent {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    scrollbar-width: none !important; /* Firefox */
+}
+.code-container-transparent::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari, Edge */
+}
+
+/* Transparent toggle button */
+.transparent-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #8fa4c7;
+    color: #2a3a54;
+    border: none;
+    border-radius: 5px;
+    padding: 3px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+.transparent-btn:hover {
+    background-color: #a4b8d9;
+    color: #2a3a54;
+}
+
+/* =========================
+   Code Styling
+   ========================= */
+code {
+    display: block;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: #8fa4c7;
+    line-height: 1.5;
+    margin-left: 20px;
+    white-space: pre;
+    font-size: 14px;
+}
+
+/* =========================
+   Parallax Background
+   ========================= */
+.parallax-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.parallax-layer {
+    position: absolute;
+    width: 100%;
+    height: 500vh;
+    background-repeat: repeat-y;
+    will-change: transform;
+    transition: background-image 0.1s allow-discrete;
+    background-position: right top;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    background-size: auto 100%;
+    transform-origin: right top;
+    right: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+#layer1 {
+    background-image: url('./background/layer1(1).png');
+    z-index: -1;
+}
+#layer2 {
+    background-image: url('./background/layer2(1).png');
+    z-index: -2;
+}
+#layer3 {
+    background-image: url('./background/layer3(1).png');
+    z-index: -3;
+}
+
+/* =========================
+   Snow Canvas
+   ========================= */
+#snowCanvas {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 500vh;
+    pointer-events: none;
+    z-index: -1;
+    display: block;
+}
+
+/* =========================
+   Transparency Utility
+   ========================= */
+.transparent-text,
+.transparent-text * {
+    color: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    text-shadow: none !important;
+    overflow: hidden;
+}

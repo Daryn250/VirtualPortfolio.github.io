@@ -55,7 +55,7 @@ function cropImageToRatio(imageUrl, targetWidth, targetHeight, callback) {
 
     img.src = imageUrl;
 }
-function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight) {
+function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight, cellSize = 80, labels = [], ref=[]) {
     const grid = document.querySelector('.captcha-grid');
     const container = document.querySelector('.captcha-container');
 
@@ -63,16 +63,12 @@ function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight) {
     const oldImgs = grid.querySelectorAll('.captcha-img');
     oldImgs.forEach(img => img.classList.add('anim-out'));
 
-    // Wait for fade-out to finish
     setTimeout(() => {
         grid.innerHTML = '';
+        grid.style.width = (gridWidth * cellSize) + "px";
+        grid.style.height = (gridHeight * cellSize) + "px";
+        grid.style.gridTemplateColumns = `repeat(${gridWidth}, ${cellSize}px)`;
 
-        // Change grid size AFTER fade-out
-        grid.style.width = (gridWidth * 80) + "px";
-        grid.style.height = (gridHeight * 80) + "px";
-        grid.style.gridTemplateColumns = `repeat(${gridWidth}, 80px)`;
-
-        // Wait a frame to ensure the browser registers the size change
         setTimeout(() => {
             let totalCells = gridWidth * gridHeight;
             for (let i = 0; i < totalCells; i++) {
@@ -80,6 +76,7 @@ function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight) {
                 const col = i % gridWidth;
                 const div = document.createElement('div');
                 div.className = 'captcha-img anim-in';
+                div.style.width = div.style.height = cellSize + "px";
 
                 // Use the corresponding image, or fallback to the last one if not enough images
                 const imgUrl = imageUrls[i] || imageUrls[imageUrls.length - 1];
@@ -90,7 +87,7 @@ function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight) {
 
                 // Add the checkmark icon
                 const icon = document.createElement('img');
-                icon.src = 'checkmark.png'; // Use your icon path
+                icon.src = 'checkmark.png';
                 icon.alt = 'selected';
                 icon.className = 'selected-icon';
                 div.appendChild(icon);
@@ -98,13 +95,26 @@ function loadMultiImageCaptcha(imageUrls, gridWidth, gridHeight) {
                 div.addEventListener('click', function() {
                     this.classList.toggle('selected');
                     updateButtonState();
+                    if (ref!=[]) {
+                        window.open(ref[i])
+                    }
                 });
-                grid.appendChild(div);
 
+                // --- Hover logic for displaying label ---
+                div.addEventListener('mouseover', function() {
+                    const label = labels[i] || imgUrl.split('/').pop();
+                    document.getElementById("captchaPrompting").textContent = label;
+                });
+                div.addEventListener('mouseout', function() {
+                    // Restore the original prompt text
+                    document.getElementById("captchaPrompting").textContent = captchas[currentChallenge].text;
+                });
+
+                grid.appendChild(div);
                 setTimeout(() => div.classList.remove('anim-in'), 400);
             }
-        }, 20); // 20ms is enough for most browsers to register the size change
-    }, 400); // Match the CSS transition duration for fade-out
+        }, 20);
+    }, 400);
 }
 
 function loadAnimatedCaptcha(gridWidth, gridHeight) {
@@ -155,7 +165,7 @@ function loadAnimatedCaptcha(gridWidth, gridHeight) {
     animateCaptchaGrid(gridWidth, gridHeight, cellSize);
 }
 
-function loadSingleImageCaptcha(imageUrl, gridWidth, gridHeight) {
+function loadSingleImageCaptcha(imageUrl, gridWidth, gridHeight, cellSize) {
     const grid = document.querySelector('.captcha-grid');
     const container = document.querySelector('.captcha-container');
 
@@ -168,9 +178,9 @@ function loadSingleImageCaptcha(imageUrl, gridWidth, gridHeight) {
         grid.innerHTML = '';
 
         // Change grid size AFTER fade-out
-        grid.style.width = (gridWidth * 80) + "px";
-        grid.style.height = (gridHeight * 80) + "px";
-        grid.style.gridTemplateColumns = `repeat(${gridWidth}, 80px)`;
+        grid.style.width = (gridWidth * cellSize) + "px";
+        grid.style.height = (gridHeight * cellSize) + "px";
+        grid.style.gridTemplateColumns = `repeat(${gridWidth}, ${cellSize}px)`;
 
         // Let the container animate to the new size
         // Wait a frame to ensure the browser registers the size change
@@ -180,6 +190,7 @@ function loadSingleImageCaptcha(imageUrl, gridWidth, gridHeight) {
                     for (let col = 0; col < gridWidth; col++) {
                         const div = document.createElement('div');
                         div.className = 'captcha-img anim-in';
+                        div.style.width = div.style.height = cellSize + "px";
                         div.style.backgroundImage = `url('${croppedDataUrl}')`;
                         div.style.backgroundRepeat = 'no-repeat';
                         div.style.backgroundSize = `${gridWidth * 100}% ${gridHeight * 100}%`;
@@ -203,11 +214,11 @@ function loadSingleImageCaptcha(imageUrl, gridWidth, gridHeight) {
                         setTimeout(() => div.classList.remove('anim-in'), 400);
                     }
                 }
-                //highlightCorrect();
             });
         }, 20); // 20ms is enough for most browsers to register the size change
     }, 400); // Match the CSS transition duration for fade-out
 }
+
 function loadCaptcha(captcha) {
     if (captcha.type === undefined) {
         alert("type for " + captcha + " not selected")
@@ -216,10 +227,14 @@ function loadCaptcha(captcha) {
         document.getElementById("submit").textContent = 'Skip'
     }
     if (captcha.type === 'multi' && Array.isArray(captcha.url)) {
-        loadMultiImageCaptcha(captcha.url, captcha.x, captcha.y)
+        loadMultiImageCaptcha(captcha.url, captcha.x, captcha.y, captcha.size || 80, captcha.labels || [], captcha.ref || []);
     }
     else if (captcha.type === 'single' && typeof captcha.url === 'string') {
-        loadSingleImageCaptcha(captcha.url, captcha.x, captcha.y)
+        if (captcha.size === undefined) {
+            loadSingleImageCaptcha(captcha.url, captcha.x, captcha.y, 80)
+        } else {
+            loadSingleImageCaptcha(captcha.url, captcha.x, captcha.y, captcha.size)
+        }
     }
     else if (captcha.type === 'canvas') {
         loadAnimatedCaptcha(captcha.x, captcha.y)
@@ -235,17 +250,22 @@ function loadCaptcha(captcha) {
 }
 
 
-function areSquaresSelected(selectedTuples, gridWidth) {
+function areSquaresSelected(selectedTuples, gridWidth, neutralTuples = []) {
     const squares = document.querySelectorAll('.captcha-img');
-    // Build a Set of correct indices for fast lookup
+    // Build Sets for fast lookup
     const correctSet = new Set(selectedTuples.map(([row, col]) => row * gridWidth + col));
+    const neutralSet = new Set(neutralTuples.map(([row, col]) => row * gridWidth + col));
 
     for (let i = 0; i < squares.length; i++) {
         const isSelected = squares[i].classList.contains('selected');
         const shouldBeSelected = correctSet.has(i);
-        if (isSelected !== shouldBeSelected) {
+        const isNeutral = neutralSet.has(i);
+
+        // If not neutral, must match correct selection
+        if (!isNeutral && isSelected !== shouldBeSelected) {
             return false;
         }
+        // If neutral, any state is allowed
     }
     return true;
 }
@@ -285,21 +305,21 @@ function setChallengeTo(num) {
     var next = captchas[num];
     loadCaptcha(next);
     document.getElementById("captchaPrompting").textContent = next.text;
-    document.getElementById("submit").textContent = 'skip'
+    document.getElementById("submit").textContent = 'Skip'
 }
 
 var captchas = [
-    {url:"images/img1-2.png",text:"people",x:3,y:3,correct:[[1,0],[1,1],[1,2],[2,0],[2,1],[2,2],], type:'single'},
-    {url:"images/img1-2.png",text:"no people",x:5,y:3,correct:[[0,0],[0,1],[0,2],[0,3],[0,4],[1,4]], type:'single'},
-    {url:"images/img3.jpg",text:"no telephone poles",x:3,y:4,correct:[[0,0],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2]], type:'single'},
-    {url:"images/img4.jpg",text:"poison ivy",x:4,y:4,correct:[], type:'single'},
-    {url:"images/img5.jpg",text:"the owl",x:5,y:5,correct:[[1,1],[2,1],[3,1]], type:'single'},
-    {url:"images/img6.jpg",text:"the color yellow",x:5,y:5,correct:[[2,2],[3,2],[4,0]], type:'single'},
-    {url:"images/img7.jpg",text:"solution less than 0",x:3,y:2,correct:[[0,0]], type:'single'},
-    {url:"images/img8.jpg",text:"someone with the name Ian",x:6,y:5,correct:[[1,1],[1,2],[2,1],[2,2],[3,1],[3,2],[4,1],[4,2]], type:'single'},
-    {url:"images/img9.png",text:"car that has right of way",x:4,y:4,correct:[[1,3]], type:'single'},
-    {url:"images/img10.jpg",text:"cool rocks",x:4,y:3,correct:[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3]], type:'single'},
-    {url:"images/img11.jpg",text:"Waldo",x:6,y:6,correct:[[3,4]], type:'single'},
+    {url:"images/img1-2.png",text:"pedestrians",x:3,y:3,correct:[[1,0],[1,1],[1,2],[2,0],[2,1],[2,2],],neutral:[], type:'single'},
+    {url:"images/img1-2.png",text:"no pedestrians",x:5,y:3,correct:[[0,0],[0,1],[0,2],[0,3],[0,4],[1,4]],neutral:[], type:'single'},
+    {url:"images/img3.jpg",text:"no telephone poles",x:3,y:4,correct:[[0,0],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2]],neutral:[], type:'single'},
+    {url:"images/img4.jpg",text:"poison ivy",x:4,y:4,correct:[],neutral:[], type:'single'},
+    {url:"images/img5.jpg",text:"the owl",x:5,y:5,correct:[[1,1],[2,1],[3,1]],neutral:[[1,2],[2,0],[2,2],[3,0],[4,0],[4,1]], type:'single'},
+    {url:"images/img6.jpg",text:"the color yellow",x:5,y:5,correct:[[2,2],[3,2],[4,0]],neutral:[[2,1],[3,1]], type:'single'},
+    {url:"images/img7.jpg",text:"solution less than 0",x:3,y:2,correct:[[0,0]],neutral:[], type:'single'},
+    {url:"images/img8.jpg",text:"someone with the name Ian",x:6,y:5,correct:[[1,1],[1,2],[2,1],[2,2],[3,1],[3,2],[4,1],[4,2]],neutral:[], type:'single'},
+    {url:"images/img9.png",text:"car that has right of way",x:4,y:4,correct:[[1,3]],neutral:[], type:'single'},
+    {url:"images/img10.jpg",text:"cool rocks",x:4,y:3,correct:[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3]],neutral:[], type:'single'},
+    {url:"images/img11.jpg",text:"Waldo",x:6,y:6,correct:[[3,4]],neutral:[], type:'single'},
     {url:[
         "images/img3.jpg", "images/bat.jpg", "images/img9.png",
         "images/baseballbat.jpg", "images/img5.jpg", "images/kitten.jpg",
@@ -308,19 +328,50 @@ var captchas = [
     {url:[
         "images/baseballbat.jpg", "images/bat.jpg",
     ],text:"bat",x:2,y:1,correct:[[0,1]], type:'multi'},
-    {url:"images/theseus.jpg", text:"Ship of Theseus" ,x:3,y:3,correct:[[0,0],[0,1],[1,1],[1,2],[2,0],[2,1],[2,2]],type:'single'},
+    {url:"images/theseus.jpg", text:"Ship of Theseus" ,x:3,y:3,correct:[],neutral:[[0,0],[0,1],[1,1],[1,2],[2,0],[2,1],[2,2]],type:'single'},
     {url:"images/bugincode.png", text:"Syntax Errors" ,x:6,y:6,correct:[[1,2]],type:'single'},
-    {text:"pong win screen",x:3,y:3,type:'canvas', game:'pong', helper:"images/pongWinScreen.png"},
+    {text:"pong win screen",x:3,y:3,type:'canvas', game:'pong',neutral:[], helper:"images/pongWinScreen.png"},
     {url:[
         "images/color1.png","images/color1.png","images/color1.png","images/color1.png",
         "images/color1.png","images/color1.png","images/color1.png","images/color2.png",
         "images/color1.png","images/color1.png","images/color1.png","images/color1.png",
-    ],text:"the odd color out",x:4,y:3,correct:[[1,3]], type:'multi'},
+    ],text:"the odd color out",x:4,y:3,correct:[[1,3]],neutral:[], type:'multi'},
     {url:[
         "images/color3.png","images/color3.png","images/color3.png","images/color3.png",
         "images/color3.png","images/color3.png","images/color3.png","images/color3.png",
         "images/color3.png","images/color3.png","images/color3.png","images/color3.png",
-    ],text:"the odd color out",x:4,y:3,correct:[], type:'multi', helper:"images/color3.png"},
+    ],text:"the odd color out",x:4,y:3,correct:[],neutral:[], type:'multi', helper:"images/color3.png"},
+    {url:[
+        "images/guy1.png","images/guy2.png","images/guy3.png",
+        "images/guy4.png","images/guy5.png","images/guy6.png",
+    ],text:"guy who tailgated me on the freeway last night",x:3,y:2,correct:[[0,1]],neutral:[], type:'multi'},
+    {url:[
+        "images/guy1.png","images/guy2.png","images/guy3.png",
+        "images/guy4.png","images/guy5.png","images/guy6.png",
+    ],text:"guy who didnt tailgate me on the freeway last night",x:3,y:2,correct:[[0,0],[0,2],[1,0],[1,1],[1,2]],neutral:[], type:'multi'},
+    {url:"images/trafficlight.jpg",text:"large traffic lights",x:7,y:7,correct:[[1,0],[1,1],[1,2],[1,3],[1,4],[2,0],[2,1],[2,2],[2,3],[2,4],[3,0],[3,1],[3,2],[3,3],[3,4],[4,2],[4,3],[4,4]],neutral:[[0,2],[0,3],[0,4],[1,0],[2,0],[2,5],[3,0],[3,5],[4,5]],size:40,type:'single'},
+    {url:"images/tyforplaying.jpg",text:"congratulations!",x:3,y:2,correct:[],neutral:[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]],type:'single'},
+    {url:[
+        "images/img1-2.png","images/img3.jpg","images/img4.jpg","images/img5.jpg",
+        "images/img6.jpg","images/img7.jpg","images/img8.jpg","images/img9.png",
+        "images/img10.jpg","images/img11.jpg","images/kitten.jpg","images/statue.jpg",
+        "images/theseus.jpg","images/trafficlight.jpg","images/bat.jpg","images/baseballbat.jpg",
+        "images/fountain.jpg","images/color1.png","images/color2.png","images/color3.png",
+    ],ref:[
+        "https://x.com/timessquarenyc","https://en.wikipedia.org/wiki/File:Palo_SES_Tegna_260513.jpg","https://www.researchgate.net/profile/Eddy-Moors/publication/254765422/figure/fig18/AS:669534444851212@1536640859424/ew-of-the-undergrowth-below-the-birch-and-pine-trees-near-the-scaffolding-tower-at-the.jpg",
+        "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiU-Orw0NqNAxXTFlkFHQiZJ80Qn5YKegQILBAB&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fautumn-greece&usg=AOvVaw1-ZE1r2QIBu3wuMM1Tonmu&opi=89978449", null, null, "https://www.freepik.com/free-photo/happy-family-spending-holidays-home_13307667.htm",
+        "https://www.khon2.com/local-news/malfunctioning-traffic-signal-treat-it-as-a-four-way-stop/", "https://www.eiscolabs.com/collections/all/products/esngkit0007", "“Ski Slopes,” scene from Where’s Waldo? Illustration by Martin Handford", "https://www.pexels.com/photo/close-up-photography-of-brown-and-white-kitten-1870376/", "https://www.wallpaperflare.com/bronze-statues-alba-iulia-figure-metal-woman-artwork-design-wallpaper-woxwb",
+        "https://en.wikipedia.org/wiki/File:Constantine_Volanakis_Argo.jpg","https://en.m.wikipedia.org/wiki/File:Traffic_lights.jpg", "https://commons.wikimedia.org/wiki/File:Little_Brown_Bat%3F_(flying_during_the_day_-_flushed%3F)_(33741700644).jpg", "https://en.m.wikipedia.org/wiki/File:Baseball_bat.svg",
+        "https://commons.wikimedia.org/wiki/File:Ruth_Asawa%27s_San_Francisco_fountain_2.JPG", null, null, null
+
+    ],labels:[
+        "Times Square", "Utility Pole", "Birch Forest Brush", "Camoflauged Owl",
+        "Road Sign", "Math Equations", "Happy Family", "4 Way Stop",
+        "Rocks", "Where's Waldo", "Kitten", "Statue",
+        "Ship of Theseus", "Traffic Lights", "Bat", "Baseball Bat",
+        "Fountain", "Green", "Green Again", "Orange"
+    ],text:"",x:4,y:5,correct:[],neutral:[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3],[3,0],[3,1],[3,2],[3,3],[4,0],[4,1],[4,2],[4,3]],type:'multi'},
+
 ]
 
 var currentChallenge = 0
@@ -335,7 +386,7 @@ window.addEventListener('DOMContentLoaded', function() {
 document.getElementById("submit").addEventListener('click', function () {
     var current = captchas[currentChallenge];
 
-    if (areSquaresSelected(current.correct, current.x)) {
+    if (areSquaresSelected(current.correct, current.x, current.neutral)) {
         currentChallenge += 1;
         if (currentChallenge < captchas.length) {
             var next = captchas[currentChallenge];
@@ -344,7 +395,6 @@ document.getElementById("submit").addEventListener('click', function () {
             document.getElementById("submit").textContent = 'Skip'
         } else {
             // Optionally handle end of captchas
-            alert("All captchas complete!");
         }
     } else {
         if (currentChallenge>0) {
@@ -509,6 +559,7 @@ function animateCaptchaGrid(gridWidth, gridHeight, cellSize) {
                 mainCtx.textBaseline = "middle";
                 mainCtx.fillText("You Win!", mainCanvas.width / 2, mainCanvas.height / 2);
                 captchas[currentChallenge].correct = [[1,1]]
+                captchas[currentChallenge].neutral = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]]
                 updateGridCells();
             }
         }
